@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -7,32 +8,71 @@ public class Board {
 	private char[][] board;
 	private int xExit;
 	private int	yExit;
+	public int size=6;
 	private String filePath = "C:\\Users\\user\\nov - eclipse-workspace\\lab1-AI\\src\\boards.txt";
+	private ArrayList<Car> cars;
 	public Board()
 	{
-		board = new char[6][6];
+		board = new char[size][size];
 		setxExit(5);
 		setyExit(2);
+		cars=new ArrayList<Car>();
 	}
 	public Board(int i,int j)
 	{
-		board = new char[6][6];
+		board = new char[size][size];
 		setxExit(j);
 		setyExit(i);
+		cars=new ArrayList<Car>();
+	}
+	public Board(int i,int j,int _size)
+	{
+		size =_size;
+		board = new char[size][size];
+		setxExit(j);
+		setyExit(i);
+		cars=new ArrayList<Car>();
 	}
 	public void print_board()
 	{
 		System.out.print("\n\n");
-		for(int i=0;i<6;i++)
+		for(int i=0;i<size;i++)
 		{
 			System.out.print("*****   ");
-			for(int j=0;j<6;j++)
+			for(int j=0;j<size;j++)
 			{
 				System.out.print(board[i][j]);
 			}
 			System.out.print("   *****   \n");
 		}
 		System.out.print("\n\n");
+	}
+	public Car moveCar(Car car , int steps)
+	{
+		if(car.isHor_orient())  // Such as ...AA.
+		{
+			int xCord = car.getLastX()+steps;
+			if(xCord>=this.size) //out of bounds
+				return null;
+			for(int j=car.getLastX()+1;j<=xCord;j++)
+			{
+				if(board[car.getY()][j]!='.')
+					return null;
+			}
+			for(int j=1;j<=steps;j++)
+			{
+				board[car.getY()][j+car.getLastX()]=car.getKey();
+				board[car.getY()][car.getX()+j-1]='.';
+			}
+			car.setLastX(xCord);
+			car.setX(car.getX()+steps);
+			return car;
+		}
+		else   // Such as ....A. | ....A.
+		{
+			
+		}
+		return null;
 	}
 	public void readBoard_file(int line) throws FileNotFoundException
 	{
@@ -44,6 +84,7 @@ public class Board {
 			 boardLine = reader.nextLine();
 		}
 		readBoard_line(boardLine);
+		cars = Car.getCarsFromBoard(this);
 			
 	}
 	public void readBoard_scan()
@@ -51,20 +92,40 @@ public class Board {
 	    Scanner scan = new Scanner(System.in);  // Create a Scanner object
 	    System.out.println("Enter Board Line");
 	    String line = scan.nextLine();  // Read user input
+	    line.trim();
 	    readBoard_line(line);
+		cars = Car.getCarsFromBoard(this);
+
 	}
 	public void readBoard_line(String line)
 	{
 		char[] array = line.toCharArray();
 		int y=0;
-		for(int i=0;i<6;i++)
+		for(int i=0;i<size;i++)
 		{
-			for(int j=0;j<6;j++)
+			for(int j=0;j<size;j++)
 			{
 				board[i][j]=array[y];
 				y++;
 			}
 		}
+	}
+	public void print_cars()
+	{
+		for(int i=0;i<cars.size();i++)
+		{
+			Car current = cars.get(i);
+			System.out.println(current.toString());
+		}
+	}
+	public boolean carMove(char car,int steps)
+	{
+		return false;
+	}
+	public boolean carMove(int i, int j,int steps)
+	{
+		return false;
+
 	}
 	public int getxExit() {
 		return xExit;
@@ -83,6 +144,18 @@ public class Board {
 	}
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+	public char[][] getBoard() {
+		return board;
+	}
+	public void setBoard(char[][] board) {
+		this.board = board;
+	}
+	public ArrayList<Car> getCars() {
+		return cars;
+	}
+	public void setCars(ArrayList<Car> cars) {
+		this.cars = cars;
 	}
 
 }
