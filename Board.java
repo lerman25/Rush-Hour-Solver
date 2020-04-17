@@ -70,9 +70,23 @@ public class Board {
 		}
 		else   // Such as ....A. | ....A.
 		{
-			
+			int yCord = car.getLastY()+steps;
+			if(yCord>=this.size) //out of bounds
+				return null;
+			for(int i=car.getLastY()+1;i<=yCord;i++)
+			{
+				if(board[i][car.getX()]!='.')
+					return null;
+			}
+			for(int i=1;i<=steps;i++)
+			{
+				board[i+car.getLastY()][car.getX()]=car.getKey();
+				board[car.getY()+i-1][car.getX()]='.';
+			}
+			car.setLastY(yCord);
+			car.setY(car.getY()+steps);
+			return car;
 		}
-		return null;
 	}
 	public void readBoard_file(int line) throws FileNotFoundException
 	{
