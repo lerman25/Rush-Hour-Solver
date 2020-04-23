@@ -60,12 +60,29 @@ public static ArrayList<Car> getCarsFromBoard(Board _board)
 						{
 							if(current==board[i][j+1])
 								boardCars.get(index).setHor_orient(true);
+
 						}
 					}
 					else
 					{
-						boardCars.get(index).setLastX(j);
 						boardCars.get(index).setLastY(i);
+						boardCars.get(index).setLastX(j);
+						Car car = boardCars.get(index);
+						if(car.key=='X') // if this is the last time we check red car
+						{
+							_board.setRedDis(_board.getxExit()-car.getLastX());
+							int counter = 0;
+							char lastC = 'X';
+							for(int x=j+1;x<_board.size;x++)
+							{
+								char currentC = board[i][x];
+								if((currentC!='.')&&(currentC!=lastC))
+									counter++;
+								lastC=currentC;
+							}
+							_board.setbCars(counter);
+							_board.setRedCar(car);
+						}
 					}
 				}
 			}

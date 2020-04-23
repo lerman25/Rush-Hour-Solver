@@ -8,6 +8,9 @@ public class Board {
 	private char[][] board;
 	private int xExit;
 	private int	yExit;
+	private int redDis;
+	private int bCars;
+	private Car redCar;
 	public int size=6;
 	private String filePath = "C:\\Users\\user\\nov - eclipse-workspace\\lab1-AI\\src\\boards.txt";
 	private ArrayList<Car> cars;
@@ -95,6 +98,7 @@ public class Board {
 		{
 			if(dir)
 			{
+
 				int yCord = car.getLastY()+steps;
 				if(yCord>=this.size) //out of bounds
 					return null;
@@ -103,11 +107,18 @@ public class Board {
 					if(board[i][car.getX()]!='.')
 						return null;
 				}
+				int changeInBcars=0;
+				if(isOnRedPath(car))
+					changeInBcars=1;
 				for(int i=1;i<=steps;i++)
 				{
 					board[i+car.getLastY()][car.getX()]=car.getKey();
 					board[car.getY()+i-1][car.getX()]='.';
 				}
+				if(isOnRedPath(car)&&changeInBcars==0)
+					setbCars(getbCars()+1);
+				if(!isOnRedPath(car)&&changeInBcars==1)
+					setbCars(getbCars()-1);
 				car.setLastY(yCord);
 				car.setY(car.getY()+steps);
 				return car;
@@ -134,6 +145,10 @@ public class Board {
 				return car;
 			}
 		}
+	}
+	public float h()
+	{
+		return (float) (0.3*(float)redDis+0.7*(float)bCars);
 	}
 	public void readBoard_file(int line) throws FileNotFoundException
 	{
@@ -243,6 +258,43 @@ public class Board {
 	}
 	public void setCars(ArrayList<Car> cars) {
 		this.cars = cars;
+	}
+	public int getRedDis() {
+		return redDis;
+	}
+	public void setRedDis(int redDis) {
+		this.redDis = redDis;
+	}
+	public int getbCars() {
+		return bCars;
+	}
+	public void setbCars(int bCars) {
+		this.bCars = bCars;
+	}
+	public Car getRedCar() {
+		return redCar;
+	}
+	public void setRedCar(Car redCar) {
+		this.redCar = redCar;
+	}
+	public void removeCar(Car remove)
+	{
+		cars.remove(remove);
+	}
+	public void addCar(Car add)
+	{
+		cars.add(add);
+		if(add.getKey()=='X')
+			setRedCar(add);
+	}
+	public boolean isOnRedPath(Car c)
+	{
+		if((xExit-c.getLastX())<getRedDis())
+		{
+			if((c.getLastY()-c.getLength())<yExit)
+				return true;
+		}
+		return false;
 	}
 
 }
