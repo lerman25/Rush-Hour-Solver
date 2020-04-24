@@ -52,7 +52,7 @@ public class Board {
 	}
 	public Car moveCar(Car car , int steps,boolean dir)
 	{
-		//true for the down/left
+		//true for the down/right
 		if(car.isHor_orient())  // Such as ...AA.
 		{
 			if(dir)
@@ -115,12 +115,13 @@ public class Board {
 					board[i+car.getLastY()][car.getX()]=car.getKey();
 					board[car.getY()+i-1][car.getX()]='.';
 				}
+
+				car.setLastY(yCord);
+				car.setY(car.getY()+steps);
 				if(isOnRedPath(car)&&changeInBcars==0)
 					setbCars(getbCars()+1);
 				if(!isOnRedPath(car)&&changeInBcars==1)
 					setbCars(getbCars()-1);
-				car.setLastY(yCord);
-				car.setY(car.getY()+steps);
 				return car;
 			}
 			else
@@ -193,15 +194,6 @@ public class Board {
 			Car current = cars.get(i);
 			System.out.println(current.toString());
 		}
-	}
-	public boolean carMove(char car,int steps)
-	{
-		return false;
-	}
-	public boolean carMove(int i, int j,int steps)
-	{
-		return false;
-
 	}
 	public int getXCarDis()
 	{
@@ -285,7 +277,10 @@ public class Board {
 	{
 		cars.add(add);
 		if(add.getKey()=='X')
+		{
 			setRedCar(add);
+			redDis = (xExit-add.getLastX());
+		}
 	}
 	public boolean isOnRedPath(Car c)
 	{
@@ -300,4 +295,18 @@ public class Board {
 	{
 		return(redCar.getLastX()==5);
 	}
+	public void print_h()
+	{
+		System.out.println("Red Distance : "+redDis);
+		System.out.println("#Blocking Cars : "+bCars);
+		System.out.println("h : "+h());
+	}
+	public void print_full_stats()
+	{
+		print_board();
+		print_cars();
+		print_h();
+		System.out.println("is Targe Board : "+isTargetBoard());
+	}
+
 }

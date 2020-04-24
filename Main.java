@@ -7,17 +7,64 @@ public class Main {
 		board.readBoard_scan();
 		board.print_board();
 		board.print_cars();
-		Car Xcar1 = board.retCar('Q');
-		board.getCars().remove(Xcar1);
-		board.getCars().add(board.moveCar(Xcar1, 1,true));
-		board.print_board();
-		board.print_cars();
-		Car Xcar = board.retCar('Q');
-		board.getCars().remove(Xcar);
-		board.getCars().add(board.moveCar(Xcar, 1,false));
-		System.out.println(Xcar1.equals(board.retCar('Q')));
-		board.print_board();
-		board.print_cars();
-		System.out.println("X dis: "+board.getXCarDis()+" X car block: "+board.getXcarBlock());
+		Car q = board.retCar('Q');
+		Car a = board.retCar('A');
+		Car b = board.retCar('B');
+		Car x = board.retCar('X');
+		Car r = board.retCar('R');
+		Car p = board.retCar('P');
+		Car c = board.retCar('C');
+		Car o = board.retCar('O');
+
+
+		board.removeCar(q);
+		q=board.moveCar(q, 1,true);
+		board.addCar(q);
+		board.print_full_stats();
+		//move
+		board.removeCar(a);
+		a=board.moveCar(a, 1,true);
+		board.addCar(a);
+		board.print_full_stats();
+		//move
+		board.removeCar(p);
+		p=board.moveCar(p, 1,false);
+		board.addCar(p);
+		board.print_full_stats();
+		//move
+		board.removeCar(b);
+		b=board.moveCar(b, 1,false);
+		board.addCar(b);
+		board.print_full_stats();
+		//move
+		board.removeCar(r);
+		b=board.moveCar(r, 2,false);
+		board.addCar(r);
+		board.print_full_stats();
+		//move
+		board.removeCar(q);
+		q=board.moveCar(q, 2,false);
+		board.addCar(q);
+		board.print_full_stats();
+		//move
+		board.removeCar(c);
+		c=board.moveCar(c, 3,false);
+		board.addCar(c);
+		board.print_full_stats();
+		//move
+		board.removeCar(q);
+		q=board.moveCar(q, 3,true);
+		board.addCar(q);
+		board.print_full_stats();
+		//move
+		board.removeCar(o);
+		q=board.moveCar(o, 3,true);
+		board.addCar(o);
+		board.print_full_stats();
+		//move
+		board.removeCar(x);
+		x=board.moveCar(x, 3,true);
+		board.addCar(x);
+		board.print_full_stats();
 	}
 }
