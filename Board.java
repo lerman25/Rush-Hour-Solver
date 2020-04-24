@@ -296,5 +296,8 @@ public class Board {
 		}
 		return false;
 	}
-
+	public boolean isTargetBoard()
+	{
+		return(redCar.getLastX()==5);
+	}
 }
