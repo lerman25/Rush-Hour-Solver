@@ -245,12 +245,12 @@ public class Board {
 	public void setBoard(char[][] board) {
 		this.board = board;
 	}
-	public ArrayList<Car> getCars() {
-		return cars;
-	}
-	public void setCars(ArrayList<Car> cars) {
-		this.cars = cars;
-	}
+//	public ArrayList<Car> getCars() {
+//		return cars;
+//	}
+//	public void setCars(ArrayList<Car> cars) {
+//		this.cars = cars;
+//	}
 	public int getRedDis() {
 		return redDis;
 	}
