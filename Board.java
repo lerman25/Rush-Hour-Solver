@@ -8,7 +8,9 @@ public class Board {
 	private char[][] board;
 	private int xExit;
 	private int	yExit;
-	private double DistanceToStart;
+	private int redDis;
+	private int bCars;
+	private Car redCar;
 	public int size=6;
 	private String filePath = "C:\\Users\\user\\nov - eclipse-workspace\\lab1-AI\\src\\boards.txt";
 	private ArrayList<Car> cars;
@@ -50,7 +52,7 @@ public class Board {
 	}
 	public Car moveCar(Car car , int steps,boolean dir)
 	{
-		//true for the down/left
+		//true for the down/right
 		if(car.isHor_orient())  // Such as ...AA.
 		{
 			if(dir)
@@ -96,6 +98,7 @@ public class Board {
 		{
 			if(dir)
 			{
+
 				int yCord = car.getLastY()+steps;
 				if(yCord>=this.size) //out of bounds
 					return null;
@@ -104,13 +107,21 @@ public class Board {
 					if(board[i][car.getX()]!='.')
 						return null;
 				}
+				int changeInBcars=0;
+				if(isOnRedPath(car))
+					changeInBcars=1;
 				for(int i=1;i<=steps;i++)
 				{
 					board[i+car.getLastY()][car.getX()]=car.getKey();
 					board[car.getY()+i-1][car.getX()]='.';
 				}
+
 				car.setLastY(yCord);
 				car.setY(car.getY()+steps);
+				if(isOnRedPath(car)&&changeInBcars==0)
+					setbCars(getbCars()+1);
+				if(!isOnRedPath(car)&&changeInBcars==1)
+					setbCars(getbCars()-1);
 				return car;
 			}
 			else
@@ -135,6 +146,10 @@ public class Board {
 				return car;
 			}
 		}
+	}
+	public float h()
+	{
+		return (float) (0.3*(float)redDis+0.7*(float)bCars);
 	}
 	public void readBoard_file(int line) throws FileNotFoundException
 	{
@@ -179,15 +194,6 @@ public class Board {
 			Car current = cars.get(i);
 			System.out.println(current.toString());
 		}
-	}
-	public boolean carMove(char car,int steps)
-	{
-		return false;
-	}
-	public boolean carMove(int i, int j,int steps)
-	{
-		return false;
-
 	}
 	public int getXCarDis()
 	{
@@ -239,18 +245,68 @@ public class Board {
 	public void setBoard(char[][] board) {
 		this.board = board;
 	}
-	public ArrayList<Car> getCars() {
-		return cars;
+//	public ArrayList<Car> getCars() {
+//		return cars;
+//	}
+//	public void setCars(ArrayList<Car> cars) {
+//		this.cars = cars;
+//	}
+	public int getRedDis() {
+		return redDis;
 	}
-	public void setCars(ArrayList<Car> cars) {
-		this.cars = cars;
+	public void setRedDis(int redDis) {
+		this.redDis = redDis;
 	}
-	public void setDistanceToStart(Double double1) {
-		// TODO Auto-generated method stub
-		this.DistanceToStart=double1;
+	public int getbCars() {
+		return bCars;
 	}
-	public double getDistanceToStart() {
-		return DistanceToStart;
+	public void setbCars(int bCars) {
+		this.bCars = bCars;
+	}
+	public Car getRedCar() {
+		return redCar;
+	}
+	public void setRedCar(Car redCar) {
+		this.redCar = redCar;
+	}
+	public void removeCar(Car remove)
+	{
+		cars.remove(remove);
+	}
+	public void addCar(Car add)
+	{
+		cars.add(add);
+		if(add.getKey()=='X')
+		{
+			setRedCar(add);
+			redDis = (xExit-add.getLastX());
+		}
+	}
+	public boolean isOnRedPath(Car c)
+	{
+		if((xExit-c.getLastX())<getRedDis())
+		{
+			if((c.getLastY()-c.getLength())<yExit)
+				return true;
+		}
+		return false;
+	}
+	public boolean isTargetBoard()
+	{
+		return(redCar.getLastX()==xExit);
+	}
+	public void print_h()
+	{
+		System.out.println("Red Distance : "+redDis);
+		System.out.println("#Blocking Cars : "+bCars);
+		System.out.println("h : "+h());
+	}
+	public void print_full_stats()
+	{
+		print_board();
+		print_cars();
+		print_h();
+		System.out.println("is Targe Board : "+isTargetBoard());
 	}
 
 }
