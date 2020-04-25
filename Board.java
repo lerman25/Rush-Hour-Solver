@@ -293,7 +293,7 @@ public class Board {
 	}
 	public boolean isTargetBoard()
 	{
-		return(redCar.getLastX()==5);
+		return(redCar.getLastX()==xExit);
 	}
 	public void print_h()
 	{
