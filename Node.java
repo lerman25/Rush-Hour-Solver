@@ -8,7 +8,6 @@ public class Node {
 	public Node(int _distance)
 	{
 		board = new Board();
-		board.readBoard_scan();
 		distance=_distance;
 		f_grade = calcGrade();
 		neighbors = new LinkedList<Node>();
@@ -71,6 +70,10 @@ public class Node {
 		} else if (!board.equals(other.board))
 			return false;
 		return true;
+	}
+	boolean is_traget()
+	{
+		return board.isTargetBoard();
 	}
 
 }

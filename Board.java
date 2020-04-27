@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Board {
 	private char[][] board;
+	private double DistanceToStart ;
 	private int xExit;
 	private int	yExit;
 	private int redDis;
@@ -307,6 +308,18 @@ public class Board {
 		print_cars();
 		print_h();
 		System.out.println("is Targe Board : "+isTargetBoard());
+	}
+	public double getDistanceToStart() {
+		return DistanceToStart;
+	}
+	public void setDistanceToStart(double distanceToStart) {
+		DistanceToStart = distanceToStart;
+	}
+	public ArrayList<Car> getCars() {
+		return cars;
+	}
+	public void setCars(ArrayList<Car> cars) {
+		this.cars = cars;
 	}
 
 }
