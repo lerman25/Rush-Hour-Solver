@@ -17,6 +17,21 @@ public Car(char _key,int i, int j,int _length,boolean orient)
 	length=_length;
 	hor_orient=orient;
 }
+public Car(Car car) {
+	// TODO Auto-generated constructor stub
+	if(car!=null)
+	{
+		key=car.getKey();
+		y=car.getY();
+		x=car.getX();
+		length=car.getLength();
+		hor_orient=car.isHor_orient();
+		lastX=car.getLastX();
+		lastY=car.getLastY();
+	}
+
+}
+// create a car list from a given board
 public static ArrayList<Car> getCarsFromBoard(Board _board)
 {
 	char[][] board = _board.getBoard();

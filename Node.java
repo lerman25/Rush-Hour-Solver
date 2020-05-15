@@ -1,16 +1,21 @@
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class Node {
 	private Board board;
 	private int distance;
 	private float f_grade;
 	private LinkedList<Node> neighbors;
+	private Node father;
+	private String move;
 	public Node(int _distance)
 	{
 		board = new Board();
 		distance=_distance;
 		f_grade = calcGrade();
 		neighbors = new LinkedList<Node>();
+		father=null;
+		setMove(null);
 	}
 	public void add_n(Node neighbor)
 	{
@@ -28,6 +33,7 @@ public class Node {
 	}
 	public float calcGrade()
 	{
+		f_grade=board.h()+distance;
 		return board.h()+distance;
 	}
 	public Board getBoard() {
@@ -41,6 +47,7 @@ public class Node {
 	}
 	public void setDistance(int distance) {
 		this.distance = distance;
+		this.calcGrade();
 	}
 	public float getF_grade() {
 		return f_grade;
@@ -57,8 +64,6 @@ public class Node {
 	}
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
@@ -74,6 +79,33 @@ public class Node {
 	boolean is_traget()
 	{
 		return board.isTargetBoard();
+	}
+	public Node getFather() {
+		return father;
+	}
+	public void setFather(Node father) {
+		this.father = father;
+	}
+	public Stack trackBack()
+	{
+		int counter =0;
+		Stack moveStack=new Stack<String>();
+		Node current = this;
+		while(current!=null)
+		{
+			if(current.getMove()!=null)
+				moveStack.push(current.getMove());
+			current = current.getFather();
+			counter++;
+
+		}
+		return moveStack;
+	}
+	public String getMove() {
+		return move;
+	}
+	public void setMove(String move) {
+		this.move = move;
 	}
 
 }
